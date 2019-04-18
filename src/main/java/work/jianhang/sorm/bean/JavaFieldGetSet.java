@@ -29,6 +29,14 @@ public class JavaFieldGetSet {
         this.setInfo = setInfo;
     }
 
+    @Override
+    public String toString() {
+        System.out.println(fieldInfo);
+        System.out.println(getInfo);
+        System.out.println(setInfo);
+        return super.toString();
+    }
+
     public String getFieldInfo() {
         return fieldInfo;
     }
