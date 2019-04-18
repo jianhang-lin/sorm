@@ -10,7 +10,7 @@ public class StringUtils {
      * @param str 目标字符串
      * @return 首字母变为大写的字符串
      */
-    public String firstChar2UpperCase(String str) {
+    public static String firstChar2UpperCase(String str) {
         // abcd -->Abcd
         return str.toUpperCase().substring(0, 1) + str.substring(1);
     }
