@@ -4,8 +4,14 @@ import work.jianhang.sorm.bean.ColumnInfo;
 import work.jianhang.sorm.bean.JavaFieldGetSet;
 import work.jianhang.sorm.bean.TableInfo;
 import work.jianhang.sorm.core.DBManager;
+import work.jianhang.sorm.core.MySqlTypeConvertor;
+import work.jianhang.sorm.core.TableContext;
 import work.jianhang.sorm.core.TypeConvertor;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -86,4 +92,44 @@ public class JavaFileUtils {
         return src.toString();
     }
 
+    /**
+     * 生成java po文件的方法
+     * @param tableInfo 表信息
+     * @param convertor 数据类型转换器
+     */
+    public static void createJavaPOFile(TableInfo tableInfo, TypeConvertor convertor) {
+        String src = createJavaSrc(tableInfo, convertor);
+
+        String srcPath = DBManager.getConf().getSrcPath() + "/";
+        String poPackage = DBManager.getConf().getPoPackage().replaceAll("\\.", "/");
+
+        File f = new File(srcPath + poPackage);
+        System.out.println("absolutePath:" + f.getAbsolutePath());
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(new FileWriter(f.getAbsoluteFile() + "/" + StringUtils.firstChar2UpperCase(tableInfo.getTname()) + ".java"));
+            bw.write(src);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) {
+                    bw.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Map<String, TableInfo> map = TableContext.getTableInfos();
+        TableInfo t = map.get("emp");
+        createJavaPOFile(t, new MySqlTypeConvertor());
+    }
 }
