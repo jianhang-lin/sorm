@@ -1,5 +1,6 @@
 package work.jianhang.sorm.bean;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +23,11 @@ public class TableInfo {
      */
     private ColumnInfo onlyPriKey;
 
+    /**
+     * 联合主键
+     */
+    private List<ColumnInfo> priKeys;
+
     public TableInfo() {
     }
 
@@ -29,6 +35,12 @@ public class TableInfo {
         this.tname = tname;
         this.columns = columns;
         this.onlyPriKey = onlyPriKey;
+    }
+
+    public TableInfo(String tname, List<ColumnInfo> priKeys, Map<String, ColumnInfo> columns) {
+        this.tname = tname;
+        this.priKeys = priKeys;
+        this.columns = columns;
     }
 
     public String getTname() {
@@ -53,5 +65,13 @@ public class TableInfo {
 
     public void setOnlyPriKey(ColumnInfo onlyPriKey) {
         this.onlyPriKey = onlyPriKey;
+    }
+
+    public List<ColumnInfo> getPriKeys() {
+        return priKeys;
+    }
+
+    public void setPriKeys(List<ColumnInfo> priKeys) {
+        this.priKeys = priKeys;
     }
 }
