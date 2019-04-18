@@ -3,6 +3,7 @@ package work.jianhang.sorm.core;
 import work.jianhang.sorm.bean.ColumnInfo;
 import work.jianhang.sorm.bean.TableInfo;
 import work.jianhang.sorm.utils.JavaFileUtils;
+import work.jianhang.sorm.utils.StringUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -66,6 +67,9 @@ public class TableContext {
 
         // 更新类结构
         updateJavaPOFile();
+
+        // 加载po包下面所有的类，便于重用，提交效率
+        loadPOTables();
     }
 
     public static Map<String, TableInfo> getTableInfos() {
@@ -83,4 +87,18 @@ public class TableContext {
         }
     }
 
+    /**
+     * 加载po包下面的类
+     */
+    public static void loadPOTables() {
+
+        for (TableInfo tableInfo : tables.values()) {
+            try {
+                Class c = Class.forName(DBManager.getConf().getPoPackage() + "." + StringUtils.firstChar2UpperCase(tableInfo.getTname()));
+                poClassTableMap.put(c, tableInfo);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
