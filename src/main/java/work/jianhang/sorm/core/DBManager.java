@@ -72,4 +72,12 @@ public class DBManager {
     public static void close(Connection conn) {
         close(null, null, conn);
     }
+
+    /**
+     * 返回Configuration对象
+     * @return
+     */
+    public static Configuration getConf() {
+        return conf;
+    }
 }
