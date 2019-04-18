@@ -88,7 +88,6 @@ public class JavaFileUtils {
         }
         // 生成类结束符
         src.append("}\n");
-        System.out.println(src);
         return src.toString();
     }
 
@@ -104,7 +103,6 @@ public class JavaFileUtils {
         String poPackage = DBManager.getConf().getPoPackage().replaceAll("\\.", "/");
 
         File f = new File(srcPath + poPackage);
-        System.out.println("absolutePath:" + f.getAbsolutePath());
         if (!f.exists()) {
             f.mkdirs();
         }
@@ -113,6 +111,7 @@ public class JavaFileUtils {
         try {
             bw = new BufferedWriter(new FileWriter(f.getAbsoluteFile() + "/" + StringUtils.firstChar2UpperCase(tableInfo.getTname()) + ".java"));
             bw.write(src);
+            System.out.println("build table:" + tableInfo.getTname() + ",java calss:" + StringUtils.firstChar2UpperCase(tableInfo.getTname()) + ".java");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -129,7 +128,8 @@ public class JavaFileUtils {
 
     public static void main(String[] args) {
         Map<String, TableInfo> map = TableContext.getTableInfos();
-        TableInfo t = map.get("emp");
-        createJavaPOFile(t, new MySqlTypeConvertor());
+        for (TableInfo t : map.values()) {
+            createJavaPOFile(t, new MySqlTypeConvertor());
+        }
     }
 }
