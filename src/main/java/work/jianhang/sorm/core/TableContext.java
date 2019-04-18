@@ -2,6 +2,7 @@ package work.jianhang.sorm.core;
 
 import work.jianhang.sorm.bean.ColumnInfo;
 import work.jianhang.sorm.bean.TableInfo;
+import work.jianhang.sorm.utils.JavaFileUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -63,10 +64,23 @@ public class TableContext {
             e.printStackTrace();
         }
 
+        // 更新类结构
+        updateJavaPOFile();
     }
 
     public static Map<String, TableInfo> getTableInfos() {
         return tables;
+    }
+
+    /**
+     * 根据表结构，更新配置的po包下面的java类
+     * 实现了从表结构转化到类结构
+     */
+    public static void updateJavaPOFile() {
+        Map<String, TableInfo> map = TableContext.getTableInfos();
+        for (TableInfo t : map.values()) {
+            JavaFileUtils.createJavaPOFile(t, new MySqlTypeConvertor());
+        }
     }
 
 }
