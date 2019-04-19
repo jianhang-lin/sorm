@@ -175,7 +175,10 @@ public class MySqlQuery implements Query {
 
 
     public static void main(String[] args) {
-
+        List<Emp> emps = new MySqlQuery().queryRows("select id, empname, age from emp where age > ?", Emp.class, new Object[]{10});
+        for (Emp e : emps) {
+            System.out.println(e.getId() + ":" + e.getEmpname() + ":" + e.getAge());
+        }
     }
 
     public static void testDML() {
