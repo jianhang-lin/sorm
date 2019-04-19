@@ -191,7 +191,7 @@ public class MySqlQuery implements Query {
 
     @Override
     public Number queryNumber(String sql, Object[] params) {
-        return null;
+        return (Number) queryValue(sql, params);
     }
 
 
