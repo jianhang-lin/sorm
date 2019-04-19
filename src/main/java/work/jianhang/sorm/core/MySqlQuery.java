@@ -21,10 +21,13 @@ public class MySqlQuery implements Query {
     public static void main(String[] args) {
         Emp emp = new Emp();
         emp.setId(2);
-        emp.setEmpname("Tom");
+        emp.setEmpname("Tony");
         emp.setBirthday(new java.sql.Date(System.currentTimeMillis()));
+        emp.setAge(12);
+        emp.setSalary(1111.0);
         // new MySqlQuery().delete(emp);
-        new MySqlQuery().insert(emp);
+        // new MySqlQuery().insert(emp);
+        new MySqlQuery().update(emp, new String[]{"empname", "age", "salary"});
     }
 
     @Override
@@ -123,6 +126,7 @@ public class MySqlQuery implements Query {
         sql.setCharAt(sql.length() - 1, ' ');
         sql.append(" where ").append(priKey.getName()).append(" = ?");
 
+        params.add(ReflectUtils.invokeGet(priKey.getName(), obj));
         return executeDML(sql.toString(), params.toArray());
     }
 
