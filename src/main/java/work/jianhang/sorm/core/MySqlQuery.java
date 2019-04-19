@@ -161,7 +161,8 @@ public class MySqlQuery implements Query {
 
     @Override
     public Object queryUniqueRows(String sql, Class clazz, Object[] params) {
-        return null;
+        List list = queryRows(sql, clazz, params);
+        return (list != null && list.size() > 0)?list.get(0) : null;
     }
 
     @Override
