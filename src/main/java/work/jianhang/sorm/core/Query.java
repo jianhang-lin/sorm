@@ -177,6 +177,14 @@ public abstract class Query {
         });
     }
 
+    /**
+     * 采用模板方法模式将JDBC操作封装成模板，便于重用
+     * @param sql sql语句
+     * @param params sql的参数
+     * @param clazz 记录要封装的java类
+     * @param back CallBack的实现类，实现回调
+     * @return
+     */
     public Object executeQueryTemplate(String sql, Object[] params, Class clazz, CallBack back) {
         Connection conn = DBManager.getConn();
         PreparedStatement ps = null;
