@@ -215,26 +215,21 @@ public abstract class Query {
      * @return 查询到的结果
      */
     public Object queryValue(String sql, Object[] params) {
-        Connection conn = DBManager.getConn();
-        Object value = null; // 存储查询结果的对象
-        PreparedStatement ps = null;
-        ResultSet rs;
-        try {
-            ps = conn.prepareStatement(sql);
-
-            // 给sql设值
-            JDBCUtils.handleParams(ps, params);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                // select count(*) from emp
-                value = rs.getObject(1);
+        return executeQueryTemplate(sql, params, null, new CallBack() {
+            @Override
+            public Object doExecute(Connection conn, PreparedStatement ps, ResultSet rs) {
+                Object value = null;
+                try {
+                    while (rs.next()) {
+                        // select count(*) from emp
+                        value = rs.getObject(1);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return value;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBManager.close(ps, conn);
-        }
-        return value;
+        });
     }
 
     /**
