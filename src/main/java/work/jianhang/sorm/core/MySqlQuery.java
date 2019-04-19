@@ -167,7 +167,26 @@ public class MySqlQuery implements Query {
 
     @Override
     public Object queryValue(String sql, Object[] params) {
-        return null;
+        Connection conn = DBManager.getConn();
+        Object value = null; // 存储查询结果的对象
+        PreparedStatement ps = null;
+        ResultSet rs;
+        try {
+            ps = conn.prepareStatement(sql);
+
+            // 给sql设值
+            JDBCUtils.handleParams(ps, params);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                // select count(*) from emp
+                value = rs.getObject(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(ps, conn);
+        }
+        return value;
     }
 
     @Override
