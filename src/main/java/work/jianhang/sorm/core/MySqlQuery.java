@@ -6,9 +6,11 @@ import work.jianhang.sorm.bean.TableInfo;
 import work.jianhang.sorm.utils.JDBCUtils;
 import work.jianhang.sorm.utils.ReflectUtils;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +21,10 @@ public class MySqlQuery implements Query {
     public static void main(String[] args) {
         Emp emp = new Emp();
         emp.setId(2);
-        new MySqlQuery().delete(emp);
+        emp.setEmpname("Tom");
+        emp.setBirthday(new java.sql.Date(System.currentTimeMillis()));
+        // new MySqlQuery().delete(emp);
+        new MySqlQuery().insert(emp);
     }
 
     @Override
@@ -45,6 +50,35 @@ public class MySqlQuery implements Query {
 
     @Override
     public void insert(Object obj) {
+        // obj-->表中。 insert into 表名(id, name, pwd) values (?, ?, ?)
+        Class c = obj.getClass();
+        List<Object> params = new ArrayList<>(); // 存储sql参数对象
+        TableInfo tableInfo = TableContext.poClassTableMap.get(c);
+        StringBuilder sql = new StringBuilder("insert into ");
+        sql.append(tableInfo.getTname());
+        sql.append(" (");
+        int countNotNullField = 0; // 计算不为null的属性值
+        Field[] fs = c.getDeclaredFields();
+        for (Field f : fs) {
+            String fieldName = f.getName();
+            Object fieldValue = ReflectUtils.invokeGet(fieldName, obj);
+
+            if (fieldValue != null) {
+                countNotNullField++;
+                sql.append(fieldName);
+                sql.append(",");
+                params.add(fieldValue);
+            }
+        }
+
+        sql.setCharAt(sql.length() - 1, ')');
+        sql.append(" values (");
+        for (int i=0; i<countNotNullField; i++) {
+            sql.append("?,");
+        }
+        sql.setCharAt(sql.length() - 1, ')');
+
+        executeDML(sql.toString(), params.toArray());
 
     }
 

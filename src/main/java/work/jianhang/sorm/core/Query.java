@@ -16,7 +16,7 @@ public interface Query {
     public int executeDML(String sql, Object[] params);
 
     /**
-     * 将一个对象存储到数据库中
+     * 将一个对象存储到数据库中，把对象中不为null的属性往数据库存储，如果数字为null则为0。
      * @param obj 要存储的对象
      */
     public void insert(Object obj);
