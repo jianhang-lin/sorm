@@ -5,6 +5,7 @@ import work.jianhang.sorm.bean.ColumnInfo;
 import work.jianhang.sorm.bean.TableInfo;
 import work.jianhang.sorm.utils.JDBCUtils;
 import work.jianhang.sorm.utils.ReflectUtils;
+import work.jianhang.vo.EmpVO;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -178,6 +179,12 @@ public class MySqlQuery implements Query {
         List<Emp> emps = new MySqlQuery().queryRows("select id, empname, age from emp where age > ?", Emp.class, new Object[]{10});
         for (Emp e : emps) {
             System.out.println(e.getId() + ":" + e.getEmpname() + ":" + e.getAge());
+        }
+
+        String sql2 = "select e.id, e.empname, 2 * salary 'xinshui', age, d.dname 'deptName', d.address 'deptAddr' from emp e join dept d on e.deptId = d.id";
+        List<EmpVO> empVOs = new MySqlQuery().queryRows(sql2, EmpVO.class, null);
+        for (EmpVO vo : empVOs) {
+            System.out.println(vo.getId() + ":" + vo.getEmpname() + ":" + vo.getXinshui() + ":" + vo.getAge() + ":" + vo.getDeptName() + ":" + vo.getDeptAddr());
         }
     }
 
