@@ -141,45 +141,59 @@ public abstract class Query {
      * @param params sql参数
      * @return 查询到的结果
      */
-    public List queryRows(String sql, Class clazz, Object[] params) {
+    public List queryRows(final String sql, final Class clazz, final Object[] params) {
+        return (List) executeQueryTemplate(sql, params, clazz, new CallBack() {
+            @Override
+            public Object doExecute(Connection conn, PreparedStatement ps, ResultSet rs) {
+                List list = null;
+                try {
+                    ResultSetMetaData metaData = rs.getMetaData();
+                    // 多行
+                    while (rs.next()) {
+                        if (list == null) {
+                            list = new ArrayList();
+                        }
+                        Object rowObject = clazz.newInstance(); // 调用javabean的无参构造器
+
+                        // 多列 select empname, age from emp where id > ? and age > 18
+                        for (int i=0; i<metaData.getColumnCount(); i++) {
+                            String columnName = metaData.getColumnLabel(i+1);
+                            Object columnValue = rs.getObject(i+1);
+
+                            // 调用rowObj对象的setXXX(String xxx)方法，将columnValue的值设置进去
+                            ReflectUtils.invokeSet(rowObject, columnName, columnValue);
+                        }
+                        list.add(rowObject);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return list;
+            }
+        });
+    }
+
+    public Object executeQueryTemplate(String sql, Object[] params, Class clazz, CallBack back) {
         Connection conn = DBManager.getConn();
-        List list = null; // 存储查询结果的容器
         PreparedStatement ps = null;
-        ResultSet rs = null;
+        ResultSet rs;
         try {
             ps = conn.prepareStatement(sql);
 
             // 给sql设值
             JDBCUtils.handleParams(ps, params);
             rs = ps.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
-            // 多行
-            while (rs.next()) {
-                if (list == null) {
-                    list = new ArrayList();
-                }
-                Object rowObject = clazz.newInstance(); // 调用javabean的无参构造器
-
-                // 多列 select empname, age from emp where id > ? and age > 18
-                for (int i=0; i<metaData.getColumnCount(); i++) {
-                    String columnName = metaData.getColumnLabel(i+1);
-                    Object columnValue = rs.getObject(i+1);
-
-                    // 调用rowObj对象的setXXX(String xxx)方法，将columnValue的值设置进去
-                    ReflectUtils.invokeSet(rowObject, columnName, columnValue);
-                }
-                list.add(rowObject);
-            }
+            return back.doExecute(conn, ps, rs);
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
+            return null;
         } finally {
             DBManager.close(ps, conn);
         }
-        return list;
     }
 
     /**
