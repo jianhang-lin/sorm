@@ -16,18 +16,6 @@ import java.util.List;
  */
 public class MySqlQuery implements Query {
 
-    public static void main(String[] args) {
-        Emp emp = new Emp();
-        emp.setId(2);
-        emp.setEmpname("Tony");
-        emp.setBirthday(new java.sql.Date(System.currentTimeMillis()));
-        emp.setAge(12);
-        emp.setSalary(1111.0);
-        // new MySqlQuery().delete(emp);
-        // new MySqlQuery().insert(emp);
-        new MySqlQuery().update(emp, new String[]{"empname", "age", "salary"});
-    }
-
     @Override
     public int executeDML(String sql, Object[] params) {
         Connection conn = DBManager.getConn();
@@ -183,5 +171,22 @@ public class MySqlQuery implements Query {
     @Override
     public Number queryNumber(String sql, Object[] params) {
         return null;
+    }
+
+
+    public static void main(String[] args) {
+
+    }
+
+    public static void testDML() {
+        Emp emp = new Emp();
+        emp.setId(2);
+        emp.setEmpname("Tony");
+        emp.setBirthday(new java.sql.Date(System.currentTimeMillis()));
+        emp.setAge(12);
+        emp.setSalary(1111.0);
+        // new MySqlQuery().delete(emp);
+        // new MySqlQuery().insert(emp);
+        new MySqlQuery().update(emp, new String[]{"empname", "age", "salary"});
     }
 }
