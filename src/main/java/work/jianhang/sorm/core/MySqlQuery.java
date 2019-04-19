@@ -1,5 +1,6 @@
 package work.jianhang.sorm.core;
 
+import work.jianhang.po.Emp;
 import work.jianhang.sorm.bean.ColumnInfo;
 import work.jianhang.sorm.bean.TableInfo;
 import work.jianhang.sorm.utils.JDBCUtils;
@@ -14,6 +15,12 @@ import java.util.List;
  * 负责针对Mysql数据库的查询
  */
 public class MySqlQuery implements Query {
+
+    public static void main(String[] args) {
+        Emp emp = new Emp();
+        emp.setId(2);
+        new MySqlQuery().delete(emp);
+    }
 
     @Override
     public int executeDML(String sql, Object[] params) {
@@ -49,7 +56,7 @@ public class MySqlQuery implements Query {
         // 获得主键
         ColumnInfo onlyPriKey = tableInfo.getOnlyPriKey();
 
-        String sql = "delete from" + tableInfo.getTname() + " where " + onlyPriKey + " = ? ";
+        String sql = "delete from " + tableInfo.getTname() + " where " + onlyPriKey.getName() + " = ? ";
         executeDML(sql, new Object[]{id});
     }
 
