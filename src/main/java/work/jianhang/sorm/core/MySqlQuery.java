@@ -107,7 +107,23 @@ public class MySqlQuery implements Query {
 
     @Override
     public int update(Object obj, String[] fieldNames) {
-        return 0;
+        // obj{"username", "pwd"} --> update 表名 set username = ?, pwd = ? where id = ?
+        Class c = obj.getClass();
+        List<Object> params = new ArrayList<>(); // 存储sql参数对象
+        TableInfo tableInfo = TableContext.poClassTableMap.get(c);
+        ColumnInfo priKey = tableInfo.getOnlyPriKey();
+        StringBuilder sql = new StringBuilder("update ");
+        sql.append(tableInfo.getTname()).append(" set ");
+
+        for (String fname : fieldNames) {
+            Object fvalue = ReflectUtils.invokeGet(fname, obj);
+            params.add(fvalue);
+            sql.append(fname).append(" = ?,");
+        }
+        sql.setCharAt(sql.length() - 1, ' ');
+        sql.append(" where ").append(priKey.getName()).append(" = ?");
+
+        return executeDML(sql.toString(), params.toArray());
     }
 
     @Override
