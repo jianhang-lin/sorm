@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 负责查询（对外提供服务的核心类）
  */
-public abstract class Query {
+public abstract class Query implements Cloneable {
 
     /**
      * 直接执行一个DML语句
