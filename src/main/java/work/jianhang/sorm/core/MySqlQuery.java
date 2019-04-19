@@ -196,7 +196,11 @@ public class MySqlQuery implements Query {
 
 
     public static void main(String[] args) {
+        Object obj = new MySqlQuery().queryValue("select empname from emp where salary > ?", new Object[]{10});
+        System.out.println(obj);
 
+        Number obj2 = new MySqlQuery().queryNumber("select count(*) from emp where salary > ?", new Object[]{10});
+        System.out.println(obj2);
     }
 
     public static void testDML() {
