@@ -2,8 +2,12 @@ package work.jianhang.sorm.core;
 
 import work.jianhang.sorm.bean.ColumnInfo;
 import work.jianhang.sorm.bean.TableInfo;
+import work.jianhang.sorm.utils.JDBCUtils;
 import work.jianhang.sorm.utils.ReflectUtils;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,7 +17,23 @@ public class MySqlQuery implements Query {
 
     @Override
     public int executeDML(String sql, Object[] params) {
-        return 0;
+        Connection conn = DBManager.getConn();
+        int count = 0;
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement(sql);
+
+            // 给sql设值
+            JDBCUtils.handleParams(ps, params);
+
+            count = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.close(ps, conn);
+        }
+        return count;
     }
 
     @Override
