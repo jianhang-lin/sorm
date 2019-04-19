@@ -7,10 +7,10 @@ create table if not exists sorm.dept
 
 create table if not exists sorm.emp
 (
-	id int(10) not null,
-	empname varchar(20) null,
-	salary double null,
-	birthday date null,
-	age int null,
-	deptId int null
+    id int(10) not null primary key ,
+    empname varchar(20) null,
+    salary double null,
+    birthday date null,
+    age int null,
+    deptId int null
 );
