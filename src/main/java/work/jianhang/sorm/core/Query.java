@@ -257,4 +257,9 @@ public abstract class Query implements Cloneable {
      * @return
      */
     public abstract Object queryPagenate(int pageNum, int size);
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
