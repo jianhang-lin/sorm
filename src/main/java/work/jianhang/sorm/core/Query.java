@@ -232,4 +232,12 @@ public abstract class Query {
     public Number queryNumber(String sql, Object[] params) {
         return (Number) queryValue(sql, params);
     }
+
+    /**
+     * 分页查询
+     * @param pageNum 第几页数据
+     * @param size 每页显示多少记录
+     * @return
+     */
+    public abstract Object queryPagenate(int pageNum, int size);
 }

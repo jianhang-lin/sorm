@@ -10,6 +10,11 @@ import java.util.List;
  */
 public class MySqlQuery extends Query {
 
+    @Override
+    public Object queryPagenate(int pageNum, int size) {
+        return null;
+    }
+
     public static void main(String[] args) {
         Object obj = new MySqlQuery().queryValue("select empname from emp where salary > ?", new Object[]{10});
         System.out.println(obj);
