@@ -17,7 +17,7 @@ public class ReflectUtils {
     public static Object invokeGet(String fieldName, Object obj) {
         try {
             Class c = obj.getClass();
-            Method m = c.getMethod("get" + StringUtils.firstChar2UpperCase(fieldName), null);
+            Method m = c.getDeclaredMethod("get" + StringUtils.firstChar2UpperCase(fieldName), null);
             return m.invoke(obj, null);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -30,4 +30,24 @@ public class ReflectUtils {
             return null;
         }
     }
+
+    /**
+     * 调用obj对象对应属性fieldName的set方法
+     * @param obj obj对象
+     * @param columnName obj对象对应属性
+     * @param columnValue obj对象对应属性的值
+     */
+    public static void invokeSet(Object obj, String columnName, Object columnValue) {
+        try {
+            Method m = obj.getClass().getDeclaredMethod("set" + StringUtils.firstChar2UpperCase(columnName), columnValue.getClass());
+            m.invoke(obj, columnValue);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
