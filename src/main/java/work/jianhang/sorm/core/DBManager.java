@@ -28,6 +28,7 @@ public class DBManager {
         conf.setUsingDB(pros.getProperty("usingDB"));
         conf.setSrcPath(pros.getProperty("srcPath"));
         conf.setPoPackage(pros.getProperty("poPackage"));
+        conf.setQueryClass(pros.getProperty("queryClass"));
     }
 
     public static Connection getConn() {
