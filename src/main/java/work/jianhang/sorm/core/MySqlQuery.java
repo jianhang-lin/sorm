@@ -1,7 +1,14 @@
 package work.jianhang.sorm.core;
 
+import work.jianhang.sorm.bean.ColumnInfo;
+import work.jianhang.sorm.bean.TableInfo;
+import work.jianhang.sorm.utils.ReflectUtils;
+
 import java.util.List;
 
+/**
+ * 负责针对Mysql数据库的查询
+ */
 public class MySqlQuery implements Query {
 
     @Override
@@ -15,13 +22,26 @@ public class MySqlQuery implements Query {
     }
 
     @Override
-    public void delete(Class clazz, int id) {
+    public void delete(Class clazz, Object id) {
+        // Emp.class,2-->delete from emp where id = 2
+        // 通过Class对象找TableInfo
+        TableInfo tableInfo = TableContext.poClassTableMap.get(clazz);
+        // 获得主键
+        ColumnInfo onlyPriKey = tableInfo.getOnlyPriKey();
 
+        String sql = "delete from" + tableInfo.getTname() + " where " + onlyPriKey + " = ? ";
+        executeDML(sql, new Object[]{id});
     }
 
     @Override
     public void delete(Object obj) {
+        Class c = obj.getClass();
+        TableInfo tableInfo = TableContext.poClassTableMap.get(c);
+        ColumnInfo onlyPriKey = tableInfo.getOnlyPriKey();
 
+        // 通过反射机制，调用属性对应的get方法或set方法
+        Object priKeyValue = ReflectUtils.invokeGet(onlyPriKey.getName(), obj);
+        delete(c, priKeyValue);
     }
 
     @Override

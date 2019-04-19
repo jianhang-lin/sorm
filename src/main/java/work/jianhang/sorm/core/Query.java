@@ -26,7 +26,7 @@ public interface Query {
      * @param clazz 跟表对应的类的Class对象
      * @param id 主键的值
      */
-    public void delete(Class clazz, int id); // delete form User where id = 2
+    public void delete(Class clazz, Object id); // delete form User where id = 2
 
     /**
      * 删除对象在数据库中对应的记录(对象所在的类对应列表，对象的主键的值对应到记录)
