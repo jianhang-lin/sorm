@@ -32,6 +32,21 @@ public class DBManager {
     }
 
     /**
+     * 创建新的Connection对象
+     * @return
+     */
+    public static Connection createConn() {
+        try {
+            Class.forName(conf.getDriver());
+            // TODO 直接建立连接，后期增加连接池处理，提高效率
+            return DriverManager.getConnection(conf.getUrl(), conf.getUser(), conf.getPwd());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * 获得Connection对象
      * @return
      */
