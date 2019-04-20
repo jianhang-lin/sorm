@@ -41,4 +41,15 @@ public class DBConnPool {
     public DBConnPool() {
         initPool();
     }
+
+    /**
+     * 从连接池中取出一个连接
+     * @return
+     */
+    public synchronized Connection getConnection() {
+        int lastIndex = pool.size() - 1;
+        Connection conn =  pool.get(lastIndex);
+        pool.remove(lastIndex);
+        return conn;
+    }
 }
