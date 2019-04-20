@@ -31,6 +31,9 @@ public class DBManager {
         conf.setQueryClass(pros.getProperty("queryClass"));
         conf.setPoolMinSize(Integer.valueOf(pros.getProperty("poolMinSize")));
         conf.setPoolMaxSize(Integer.valueOf(pros.getProperty("poolMaxSize")));
+
+        // 加载TableContest
+        System.out.println(TableContext.class);
     }
 
     /**
