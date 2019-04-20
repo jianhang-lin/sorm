@@ -31,6 +31,10 @@ public class DBManager {
         conf.setQueryClass(pros.getProperty("queryClass"));
     }
 
+    /**
+     * 获得Connection对象
+     * @return
+     */
     public static Connection getConn() {
         try {
             Class.forName(conf.getDriver());
@@ -42,6 +46,12 @@ public class DBManager {
         }
     }
 
+    /**
+     * 关闭传入的ResultSet、PreparedStatement、Connection对象
+     * @param rs
+     * @param ps
+     * @param conn
+     */
     public static void close(ResultSet rs, Statement ps, Connection conn) {
         try {
             if (rs != null) {
@@ -66,10 +76,19 @@ public class DBManager {
         }
     }
 
+    /**
+     * 关闭传入的PreparedStatement、Connection对象
+     * @param ps
+     * @param conn
+     */
     public static void close(Statement ps, Connection conn) {
         close(null, ps, conn);
     }
 
+    /**
+     * 关闭传入的Connection对象
+     * @param conn
+     */
     public static void close(Connection conn) {
         close(null, null, conn);
     }
