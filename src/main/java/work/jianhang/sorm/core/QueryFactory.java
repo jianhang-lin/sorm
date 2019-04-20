@@ -5,7 +5,6 @@ package work.jianhang.sorm.core;
  */
 public class QueryFactory {
 
-    private static QueryFactory factory = new QueryFactory();
     private static Query prototypeObj; // 原型对象
 
     static {
@@ -24,7 +23,7 @@ public class QueryFactory {
     private QueryFactory() {
     }
 
-    public Query createQuery() {
+    public static Query createQuery() {
         try {
             return (Query) prototypeObj.clone();
         } catch (CloneNotSupportedException e) {
