@@ -1,6 +1,7 @@
 package work.jianhang.sorm.core;
 
 import work.jianhang.sorm.bean.Configuration;
+import work.jianhang.sorm.pool.DBConnPool;
 
 import java.io.IOException;
 import java.sql.*;
@@ -11,7 +12,14 @@ import java.util.Properties;
  */
 public class DBManager {
 
+    /**
+     * 配置信息
+     */
     private static Configuration conf;
+    /**
+     * 连接池对象
+     */
+    private static DBConnPool pool;
 
     static {
         Properties pros = new Properties();
@@ -56,14 +64,17 @@ public class DBManager {
      * @return 连接对象
      */
     public static Connection getConn() {
-        try {
+        /*try {
             Class.forName(conf.getDriver());
-            // TODO 直接建立连接，后期增加连接池处理，提高效率
             return DriverManager.getConnection(conf.getUrl(), conf.getUser(), conf.getPwd());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }*/
+        if (pool == null) {
+            pool = new DBConnPool();
         }
+        return pool.getConnection();
     }
 
     /**
@@ -87,13 +98,7 @@ public class DBManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        pool.close(conn);
     }
 
     /**
