@@ -217,6 +217,22 @@ public abstract class Query implements Cloneable {
     }
 
     /**
+     * 根据主键的值直接查询对应的对象
+     * @param clazz 封装数据的javabean类的Class对象
+     * @param id sql参数
+     * @return 查询到的结果
+     */
+    public Object queryById(Class clazz, Object id) {
+        // select * from emp where id = ?
+        TableInfo tableInfo = TableContext.poClassTableMap.get(clazz);
+        // 获得主键
+        ColumnInfo onlyPriKey = tableInfo.getOnlyPriKey();
+
+        String sql = "select * from " + tableInfo.getTname() + " where " + onlyPriKey.getName() + " = ? ";
+        return queryUniqueRows(sql, clazz, new Object[]{id});
+    }
+
+    /**
      * 查询返回一个值(一行一列)，并将该值返回
      * @param sql 查询语句
      * @param params sql参数
