@@ -23,6 +23,10 @@ public class QueryFactory {
     private QueryFactory() {
     }
 
+    /**
+     * 创建Query对象
+     * @return Query对象
+     */
     public static Query createQuery() {
         try {
             return (Query) prototypeObj.clone();

@@ -95,7 +95,7 @@ public abstract class Query implements Cloneable {
 
     /**
      * 删除对象在数据库中对应的记录(对象所在的类对应列表，对象的主键的值对应到记录)
-     * @param obj
+     * @param obj 待删除的对象
      */
     public void delete(Object obj) {
         Class c = obj.getClass();
@@ -183,7 +183,7 @@ public abstract class Query implements Cloneable {
      * @param params sql的参数
      * @param clazz 记录要封装的java类
      * @param back CallBack的实现类，实现回调
-     * @return
+     * @return Object
      */
     public Object executeQueryTemplate(String sql, Object[] params, Class clazz, CallBack back) {
         Connection conn = DBManager.getConn();
@@ -254,7 +254,7 @@ public abstract class Query implements Cloneable {
      * 分页查询
      * @param pageNum 第几页数据
      * @param size 每页显示多少记录
-     * @return
+     * @return 分页数据
      */
     public abstract Object queryPagenate(int pageNum, int size);
 

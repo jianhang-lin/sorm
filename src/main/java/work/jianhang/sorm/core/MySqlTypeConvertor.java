@@ -5,6 +5,11 @@ package work.jianhang.sorm.core;
  */
 public class MySqlTypeConvertor implements TypeConvertor {
 
+    /**
+     * mysql数据库类型转换成java数据类型
+     * @param columnType 数据库字段的数据类型
+     * @return java数据类型
+     */
     public String databaseType2JavaType(String columnType) {
         if ("varchar".equalsIgnoreCase(columnType) || "char".equalsIgnoreCase(columnType)) {
             return "String";
@@ -29,7 +34,13 @@ public class MySqlTypeConvertor implements TypeConvertor {
         return null;
     }
 
+    /**
+     * java数据类型转换成mysql数据库类型
+     * @param javaDataType java数据类型
+     * @return mysql数据库类型
+     */
     public String javaType2DatabaseType(String javaDataType) {
+        // TODO
         return null;
     }
 }

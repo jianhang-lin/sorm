@@ -35,7 +35,7 @@ public class DBManager {
 
     /**
      * 创建新的Connection对象
-     * @return
+     * @return 连接对象
      */
     public static Connection createConn() {
         try {
@@ -50,7 +50,7 @@ public class DBManager {
 
     /**
      * 获得Connection对象
-     * @return
+     * @return 连接对象
      */
     public static Connection getConn() {
         try {
@@ -65,9 +65,9 @@ public class DBManager {
 
     /**
      * 关闭传入的ResultSet、PreparedStatement、Connection对象
-     * @param rs
-     * @param ps
-     * @param conn
+     * @param rs ResultSet对象
+     * @param ps PreparedStatement对象
+     * @param conn Connection对象
      */
     public static void close(ResultSet rs, Statement ps, Connection conn) {
         try {
@@ -95,8 +95,8 @@ public class DBManager {
 
     /**
      * 关闭传入的PreparedStatement、Connection对象
-     * @param ps
-     * @param conn
+     * @param ps PreparedStatement对象
+     * @param conn Connection对象
      */
     public static void close(Statement ps, Connection conn) {
         close(null, ps, conn);
@@ -104,7 +104,7 @@ public class DBManager {
 
     /**
      * 关闭传入的Connection对象
-     * @param conn
+     * @param conn Connection对象
      */
     public static void close(Connection conn) {
         close(null, null, conn);
@@ -112,7 +112,7 @@ public class DBManager {
 
     /**
      * 返回Configuration对象
-     * @return
+     * @return 连接对象
      */
     public static Configuration getConf() {
         return conf;
