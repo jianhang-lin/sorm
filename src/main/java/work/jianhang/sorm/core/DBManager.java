@@ -29,6 +29,8 @@ public class DBManager {
         conf.setSrcPath(pros.getProperty("srcPath"));
         conf.setPoPackage(pros.getProperty("poPackage"));
         conf.setQueryClass(pros.getProperty("queryClass"));
+        conf.setPoolMinSize(Integer.valueOf(pros.getProperty("poolMinSize")));
+        conf.setPoolMaxSize(Integer.valueOf(pros.getProperty("poolMaxSize")));
     }
 
     /**
